@@ -87,7 +87,9 @@ class SetData:
         self.data:Dict[str, Dict[str, Dict[str,str]]] = self.get_info()
         self.data_date_frame:pd.DataFrame = self.data_date_frame()
         self.data_user_dict:Dict[str, Dict[str, Dict[str,str]]] = self.data_user_dict()
-        self.data_user_frame:pd.DataFrame = self.data_user_frame()
+        self.data_user_frame:dict = self.data_user_frame()
+        self.data_all_frame:pd.DataFrame = self.data_all_frame()
+        self.data_user_frame["全員"] = self.data_all_frame
         # self.url = convert_url(self.url)
 
     def convert_url(self):
@@ -172,3 +174,28 @@ class SetData:
             data_user_frame[name].index=self.time_index
             # data_user_frame[name]=data_user_frame[name].set_index(self.time_index)
         return data_user_frame
+    
+    # 全体のDataFrameを作成
+    def data_all_frame(self) -> pd.DataFrame:
+        data_user_frame=self.data_user_frame
+        data_all_frame=pd.DataFrame()
+        dates = list(data_user_frame[list(data_user_frame.keys())[0]].columns)
+        time_slots = list(data_user_frame[list(data_user_frame.keys())[0]].index)
+        name_data_dict={}
+        name_date_dict={}
+        name_time_dict={}
+        for name in list(data_user_frame.keys()):
+            name_data_dict[name] = []
+            name_date_dict[name] = []
+            name_time_dict[name] = []
+        for name in list(data_user_frame.keys()):
+            for date in dates:
+                for time in time_slots:
+                    name_date_dict[name].append(date)
+                    name_time_dict[name].append(time)
+                    name_data_dict[name].append(data_user_frame[name][date][time])
+        for name in list(name_data_dict.keys()):
+            data_all_frame["日付"] = name_date_dict[name]
+            data_all_frame["時間帯"] = name_time_dict[name]
+            data_all_frame[name] = name_data_dict[name]
+        return data_all_frame
