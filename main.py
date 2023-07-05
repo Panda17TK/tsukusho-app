@@ -115,6 +115,7 @@ def prob_get():
     st.write('Input value:', text_input)
 
 def prob_result():
+    st.header("Coming soon ...")
     st.text(st.session_state['input_value'])
     pass
 
