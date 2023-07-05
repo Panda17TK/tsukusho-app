@@ -43,6 +43,11 @@ def result_page():
         st.session_state.setdata = setdata.SetData(input_value)
     except:
         st.warning("URLが間違っています。")
+        if st.button('URL入力画面に戻る'):
+            # ページ2に遷移する際に入力値を渡す
+            st.session_state.read_data_bool = False
+            del st.session_state['input_value']
+            st.experimental_rerun()
         st.stop()
     for name in list(st.session_state.setdata.data_user_frame.keys()):
         st.session_state.setdata.data_user_frame[name]=st.session_state.setdata.data_user_frame[name].replace("", pd.NA).dropna(how='all', axis=0)
