@@ -8,7 +8,7 @@ from io import BytesIO
 
 # url = "https://tonton.amaneku.com/sp/list.php?id=20230612011710_zmxBic"
 sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-from SetData import setdata
+from GetData import setdata
 
 # st.session_state.read_prob_bool = False
 
