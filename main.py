@@ -103,12 +103,17 @@ def result_page():
         selected_multiple_dataframe_re = selected_multiple_dataframe.set_index("Index", drop=False)[selected_multiple]
         # st.dataframe(selected_multiple_dataframe_re)
         key2 = st.checkbox("転値", key="Key2")
+        #key3 = st.checkbox("欠損値を除去", key="Key3")
+        #if key3 == True:
+        #    selected_multiple_dataframe_re=selected_multiple_dataframe_re.dropna(how="all")
         if key2 == False:
             st.dataframe(selected_multiple_dataframe_re)
             selected_dataframe_multiple = selected_multiple_dataframe_re
         elif key2 == True:
             st.dataframe(selected_multiple_dataframe_re.T)
             selected_dataframe_multiple = selected_multiple_dataframe_re.T
+
+
         set_name_str_list = set_name_str(selected_multiple)
         selected_dataframe_multiple.to_excel(buf := BytesIO(),sheet_name=set_name_str_list ,index=True)
         st.download_button(label="「"+set_name_str_list+"」の予定をエクセル形式で保存", data=buf.getvalue(), file_name=set_name_str_list+"-compared.xlsx")
