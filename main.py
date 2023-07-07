@@ -12,6 +12,12 @@ from GetData import setdata
 
 # st.session_state.read_prob_bool = False
 
+def set_name_str(name_list: list) -> str:
+    name_str = ""
+    for name in name_list:
+        name_str += name + "_"
+    return name_str
+
 def connect_day_time(df):
     pass
 
@@ -68,7 +74,7 @@ def result_page():
     #                 active_color="#11567f",
     #                 track_color="#29B5E8"
     #                 )
-    key1 = st.checkbox("転値")
+    key1 = st.checkbox("転値", key="Key1")
     if key1 == False:
         st.dataframe(st.session_state.setdata.data_user_frame[stock])
         selected_dataframe = st.session_state.setdata.data_user_frame[stock]
@@ -86,11 +92,26 @@ def result_page():
     selected_dataframe.to_excel(buf := BytesIO(),sheet_name=stock ,index=True)
     st.download_button(label="「"+stock+"」の予定をエクセル形式で保存", data=buf.getvalue(), file_name=stock+"-schedule.xlsx")
     st.header("予定を比較")
-    selected_multiple = st.multiselect('表示する人を選択', options=stock_list[:-1], default=None)
+    selected_multiple = st.multiselect('比較したい人を選んでください', options=stock_list[:-1], default=None)
     if selected_multiple == []:
         pass
     else:
-        st.write(selected_multiple)
+        selected_multiple_dataframe = st.session_state.setdata.data_user_frame["全員"]
+        selected_multiple_def= ["日付", "時間帯"] + selected_multiple
+        selected_multiple_dataframe = selected_multiple_dataframe[selected_multiple_def]
+        selected_multiple_dataframe["Index"] = selected_multiple_dataframe['日付'].astype('str') + selected_multiple_dataframe['時間帯'].astype('str')
+        selected_multiple_dataframe_re = selected_multiple_dataframe.set_index("Index", drop=False)[selected_multiple]
+        # st.dataframe(selected_multiple_dataframe_re)
+        key2 = st.checkbox("転値", key="Key2")
+        if key2 == False:
+            st.dataframe(selected_multiple_dataframe_re)
+            selected_dataframe_multiple = selected_multiple_dataframe_re
+        elif key2 == True:
+            st.dataframe(selected_multiple_dataframe_re.T)
+            selected_dataframe_multiple = selected_multiple_dataframe_re.T
+        set_name_str_list = set_name_str(selected_multiple)
+        selected_dataframe_multiple.to_excel(buf := BytesIO(),sheet_name=set_name_str_list ,index=True)
+        st.download_button(label="「"+set_name_str_list+"」の予定をエクセル形式で保存", data=buf.getvalue(), file_name=set_name_str_list+"-schedule.xlsx")
 
     #with col2:
     #    if st.button("全員の予定をエクセル形式で保存"):
