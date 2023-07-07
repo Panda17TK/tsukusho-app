@@ -79,7 +79,7 @@ def result_page():
 
     # col1, col2 = st.columns(2)
     # with col1:
-    selected_dataframe.to_excel(buf := BytesIO(),sheet_name=stock ,index=False)
+    selected_dataframe.to_excel(buf := BytesIO(),sheet_name=stock ,index=True)
     st.download_button(label="「"+stock+"」の予定をエクセル形式で保存", data=buf.getvalue(), file_name=stock+"-schedule.xlsx")
 
     #with col2:
