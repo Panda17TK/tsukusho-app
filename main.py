@@ -12,6 +12,9 @@ from GetData import setdata
 
 # st.session_state.read_prob_bool = False
 
+def connect_day_time(df):
+    pass
+
 def df_to_xlsx(df, name):
     byte_xlsx = BytesIO()
     writer_xlsx = pd.ExcelWriter(byte_xlsx, engine="xlsxwriter")
@@ -72,6 +75,7 @@ def result_page():
     elif key1 == True:
         st.dataframe(st.session_state.setdata.data_user_frame[stock].T)
         selected_dataframe = st.session_state.setdata.data_user_frame[stock].T
+
     #for name in st.session_state.setdata.data_user_frame.keys():
     #    st.header(name)
     #    st.session_state.setdata.data_user_frame[name]=st.session_state.setdata.data_user_frame[name].replace("", pd.NA).dropna(how='all', axis=0)
@@ -81,6 +85,12 @@ def result_page():
     # with col1:
     selected_dataframe.to_excel(buf := BytesIO(),sheet_name=stock ,index=True)
     st.download_button(label="「"+stock+"」の予定をエクセル形式で保存", data=buf.getvalue(), file_name=stock+"-schedule.xlsx")
+    st.header("予定を比較")
+    selected_multiple = st.multiselect('表示する人を選択', options=stock_list[:-1], default=None)
+    if selected_multiple == []:
+        pass
+    else:
+        st.write(selected_multiple)
 
     #with col2:
     #    if st.button("全員の予定をエクセル形式で保存"):
