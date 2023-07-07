@@ -103,7 +103,7 @@ def result_page():
         selected_multiple_dataframe_re = selected_multiple_dataframe.set_index("Index", drop=False)[selected_multiple]
         # st.dataframe(selected_multiple_dataframe_re)
         key2 = st.checkbox("転値", key="Key2")
-        #key3 = st.checkbox("欠損値を除去", key="Key3")
+        # key3 = st.checkbox("欠損値を除去", key="Key3")
         #if key3 == True:
         #    selected_multiple_dataframe_re=selected_multiple_dataframe_re.dropna(how="all")
         if key2 == False:
