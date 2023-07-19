@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="H:\開発中\tsukusho-optim\myenv"
+VIRTUAL_ENV="C:\Users\banti\Documents\開発\tsukusho-app\myenv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
